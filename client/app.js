@@ -1,5 +1,7 @@
 
 
+var WebSocket = WebSocket || window.WebSocket || window.MozWebSocket; 
+
 var GameLayer = cc.Layer.extend({
 	ctor:function () {
 		this._super();
