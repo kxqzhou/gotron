@@ -10,10 +10,10 @@
             <!--sourceMapOutputFile="./cocos2d-js-sourcemap" sourceMapFormat="V3"> -->
             <sources dir="./">
                 <!-- You may need to modify the file name to the actual downloaded file name -->
-                <file name="client/cocos2d-js-v3.13.js"/>
+                <file name="frontend/cocos2d-js-v3.13.js"/>
                 <!-- Put your own js files here, dependency order is also important -->
-                <file name="client/resource.js"/>
-                <file name="client/app.js"/>
+                <file name="frontend/resource.js"/>
+                <file name="frontend/app.js"/>
             </sources>
         </jscomp>
     </target>

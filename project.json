@@ -7,8 +7,8 @@
     "id" : "gameCanvas",
     "renderMode" : 1,
     "jsList" : [
-        "client/resource.js",
-        "client/app.js"
+        "frontend/resource.js",
+        "frontend/app.js"
     ]
 }
 
