@@ -5,6 +5,7 @@ import (
 	"log"
 	"flag"
 	"net/http"
+	"github.com/kxqzhou/gotron/server"
 )
 
 func serveHome( w http.ResponseWriter, r *http.Request ) {
@@ -20,19 +21,19 @@ func serveHome( w http.ResponseWriter, r *http.Request ) {
 		return
 	}
 
-	http.ServeFile( w, r, "../index.html" )
+	http.ServeFile( w, r, "index.html" )
 }
 
 func main() {
-	hub := newHub()
-	go hub.run()
+	hub := server.NewHub()
+	go hub.Run()
 	
 	var port = flag.String( "port", ":8080", "http service address" )
 	flag.Parse()
 
 	http.HandleFunc( "/", serveHome )
 	http.HandleFunc( "/ws", func( w http.ResponseWriter, r *http.Request ) {
-		serveWs( hub, w, r )
+		server.ServeWs( hub, w, r )
 	} )
 	
 	err := http.ListenAndServe( port, nil )
