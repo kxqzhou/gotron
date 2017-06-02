@@ -47,7 +47,7 @@ func (c *Client) receive() {
 			break
 		}
 		
-		var command string
+		var command vec2
 		err = json.Unmarshal( keyInput, &command )
 
 		c.updatePosition( command )
@@ -61,26 +61,39 @@ func (c *Client) loop() {
 	}
 }
 
-func ServeWs( h *hub, w http.ResponseWriter, r *http.Request ) {
-	conn, err = upgrader.Upgrade( w, r, nil )
+func ServeWs( h *Hub, w http.ResponseWriter, r *http.Request ) {
+	socket, err = upgrader.Upgrade( w, r, nil )
 	if err != nil {
 		log.Println( err )
 		return
 	}
 
 	cl := Client {
-
+		hub: h,
+		conn: socket,
+		player: newPlayer(),
 	}
 
 	go cl.receive()
 	go cl.loop()
 }
 
-func (c *Client) updatePosition( command string ) {
-
+func (c *Client) updatePosition( dir vec2 ) {
+	newPos := addVec( c.player.pos, dir )
+	if withinBounds( newPos ) {
+		c.player.pos = newPos
+		id := c.hub[c]
+		c.hub.game[ newPos.X ][ newPos.Y ] = id
+	}
 }
 
 func (c *Client) sendPlayerState() {
-	
+	gameInfo, err := json.Marshal( c.hub.game )
+	if err != nil:
+		log.Println( "JSON Marshal error: ", err )
+
+	err := c.conn.WriteMessage( websocket.TextMessage, gameInfo )
+	if err != nil:
+		c.conn.Close()
 }
 
