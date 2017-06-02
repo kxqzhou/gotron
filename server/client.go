@@ -43,7 +43,7 @@ func (c *Client) receive() {
 	for {
 		_, keyInput, err := c.conn.ReadMessage()
 		if err != nil {
-			log.Println( "Something happened trying to recieve commands from client", err )
+			log.Println( "Error while recieving commands from client", err )
 			break
 		}
 		
