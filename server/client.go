@@ -8,12 +8,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/gorilla/websocket"
-	//"os"
+	"os"
 )
 
 const (
 	// delay before sending next client command
-	stepDelay = 20
+	stepDelay = 200
 
 	// max wait period before disconnect
 	maxWaitTime = 60
@@ -49,11 +49,17 @@ func (c *Client) receive() {
 			log.Println( "Error while recieving commands from client", err )
 			break
 		}
+
+		os.Stdout.Write( keyInput )
 		
 		var command vec2
 		err = json.Unmarshal( keyInput, &command )
 
+		log.Println( "cmd:", command )
+
 		c.updatePosition( command )
+
+		log.Println( "pos:", c.player.pos )
 	}
 }
 

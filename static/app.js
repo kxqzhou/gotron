@@ -2,6 +2,18 @@
 
 var WebSocket = WebSocket || window.WebSocket || window.MozWebSocket; 
 
+// are these really not provided by cocos2d? but their documentation is seriously lacking..
+var KeyCode = {
+	KEY_W:87,
+	KEY_UP_ARROW:38,
+	KEY_A:65,
+	KEY_LEFT_ARROW:37,
+	KEY_S:83,
+	KEY_DOWN_ARROW:40,
+	KEY_D:68,
+	KEY_RIGHT_ARROW: 39,
+}
+
 var GameLayer = cc.Layer.extend({
 	conn:null,
 	colors:[],
@@ -47,8 +59,6 @@ var GameLayer = cc.Layer.extend({
 					app.grid[ i * gameInfo.Grid.length + j ] = gameInfo.Grid[i][j];
 				}
 			}
-
-			app.reDraw();
 		};
 
 		this.conn.onerror = this.onSocketError;
@@ -57,33 +67,55 @@ var GameLayer = cc.Layer.extend({
 			cc.eventManager.addListener( {
 				event: cc.EventListener.KEYBOARD,
 				onKeyPressed: function (key, evt) {
+					console.log( "pressed:", key )
+
 					switch (key) {
-						case cc.KeyCode.KEY_W:
-						case cc.KeyCode.KEY_UP_ARROW:
-							var dir = "{ X: 0, Y: 1 }";
-							this.conn.send( dir );
+						case KeyCode.KEY_W:
+						case KeyCode.KEY_UP_ARROW:
+							console.log( "W or up" )
+
+							var dir = {
+								X:0,
+								Y:1,
+							}
+							app.conn.send( JSON.stringify( dir ) );
 							break;
-						case cc.KeyCode.KEY_A:
-						case cc.KeyCode.KEY_LEFT_ARROW:
-							var dir = "{ X: -1, Y: 0 }";
-							this.conn.send( dir );
+						case KeyCode.KEY_A:
+						case KeyCode.KEY_LEFT_ARROW:
+							console.log( "A or left" )
+
+							var dir = {
+								X:-1,
+								Y:0,
+							}
+							app.conn.send( JSON.stringify( dir ) );
 							break;						
-						case cc.KeyCode.KEY_S:
-						case cc.KeyCode.KEY_DOWN_ARROW:
-							var dir = "{ X: 0, Y: -1 }";
-							this.conn.send( dir );
+						case KeyCode.KEY_S:
+						case KeyCode.KEY_DOWN_ARROW:
+							console.log( "S or down" )
+
+							var dir = {
+								X:0,
+								Y:-1,
+							}
+							app.conn.send( JSON.stringify( dir ) );
 							break;
-						case cc.KeyCode.KEY_D:
-						case cc.KeyCode.KEY_RIGHT_ARROW:
-							var dir = "{ X: 1, Y: 0 }";
-							this.conn.send( dir );
+						case KeyCode.KEY_D:
+						case KeyCode.KEY_RIGHT_ARROW:
+							console.log( "D or right" )
+
+							var dir = {
+								X:1,
+								Y:0,
+							}
+							app.conn.send( JSON.stringify( dir ) );
 							break;
 					}
 				}
 			}, this );
 		}
 
-		//this.scheduleUpdate();
+		this.scheduleUpdate();
 	},
 
 	/*onSocketMessage:function (evt) {
@@ -98,28 +130,23 @@ var GameLayer = cc.Layer.extend({
 				this.grid[ i * gameInfo.Grid.length + j ] = gameInfo.Grid[i][j];
 			}
 		}
-
-		this.reDraw();
 	},*/
-
-	reDraw:function() {
-		// more hardcoding.. this is bad
-		for (var i = 0; i < 80; i++) {
-			for (var j = 0; j < 45; j++) {
-				this.drawNode.drawRect( cc.p( i * 10, j * 10 ), cc.p( (i + 1) * 10, (j + 1) * 10 ), 0, 
-										this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] );
-			}
-		}
-	},
 
 	onSocketError:function (err) {
 		console.log( "front-end socket error: " + err );
 	},
-	/*
+	
 	update:function (dt) {
-		
+		// more hardcoding.. this is bad
+		for (var i = 0; i < 80; i++) {
+			for (var j = 0; j < 45; j++) {
+				if (this.grid[ i * 80 + j ] > 0) {
+					this.drawNode.drawRect( cc.p( i * 10, j * 10 ), cc.p( (i + 1) * 10, (j + 1) * 10 ), 0, 
+											this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] );
+				}
+			}
+		}
 	}
-	*/
 });
 
 var GameScene = cc.Scene.extend({

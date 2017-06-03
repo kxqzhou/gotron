@@ -25,7 +25,7 @@ type Player struct {
 
 func newPlayer() *Player {
 	return &Player {
-		pos: vec2{},
+		pos: vec2{ 40, 22 },
 	}
 }
 
