@@ -21,7 +21,9 @@ func serveHome( w http.ResponseWriter, r *http.Request ) {
 		return
 	}
 
-	http.ServeFile( w, r, "index.html" )
+	//http.ServeFile( w, r, "static/index.html" )
+
+	http.FileServer( http.Dir( "./static" ) )
 }
 
 func main() {
@@ -31,12 +33,14 @@ func main() {
 	var port = flag.String( "port", ":8080", "http service address" )
 	flag.Parse()
 
-	http.HandleFunc( "/", serveHome )
-	http.Handle( "/static", http.FileServer( http.Dir( "/static" ) ) )
+	//http.HandleFunc( "/", serveHome )
+	http.Handle( "/", http.FileServer( http.Dir( "./static" ) ) )
+	// why doesn't the above work?
+
 	http.HandleFunc( "/ws", func( w http.ResponseWriter, r *http.Request ) {
 		server.ServeWs( hub, w, r )
 	} )
-	
+
 	err := http.ListenAndServe( *port, nil )
 	if err != nil {
 		log.Fatal( "Listen and serve", err )
