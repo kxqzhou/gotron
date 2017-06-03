@@ -36,7 +36,7 @@ func main() {
 		server.ServeWs( hub, w, r )
 	} )
 	
-	err := http.ListenAndServe( port, nil )
+	err := http.ListenAndServe( *port, nil )
 	if err != nil {
 		log.Fatal( "Listen and serve", err )
 	}

@@ -2,10 +2,6 @@
 
 package server
 
-import (
-	"math/rand"
-)
-
 const (
 	gridWidth = 80
 	gridHeight = 45
@@ -29,19 +25,20 @@ type Player struct {
 
 func newPlayer() *Player {
 	return &Player {
-		vec2{}
+		pos: vec2{},
 	}
 }
 
 type Game struct {
 	colors []string
-	grid [][]int
+	grid [ gridWidth ][ gridHeight ]int
 }
 
 func newGame() *Game {
 	return &Game {
 		colors: []string{ "black", "red", "blue", "green", "yellow" },
-		grid: [ gridWidth ][ gridHeight ]int,
+		// grid: [][]int,
+		// let grid set to default value
 	}
 }
 

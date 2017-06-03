@@ -3,8 +3,10 @@
 package server
 
 import (
+	"log"
 	"time"
 	"encoding/json"
+	"net/http"
 	"github.com/gorilla/websocket"
 )
 
@@ -35,7 +37,7 @@ func (c *Client) receive() {
 	defer func () {
 		c.hub.unregister <- c
 		c.conn.Close()
-	}
+	}()
 	c.conn.SetReadDeadline( time.Now().Add( maxWaitTime ) )
 	// idk what this does, prob sets the error message. taken from the chat example on gorilla websockets
 	c.conn.SetPongHandler( func( string ) error { c.conn.SetReadDeadline( time.Now().Add( maxWaitTime )); return nil } )
@@ -62,7 +64,7 @@ func (c *Client) loop() {
 }
 
 func ServeWs( h *Hub, w http.ResponseWriter, r *http.Request ) {
-	socket, err = upgrader.Upgrade( w, r, nil )
+	socket, err := upgrader.Upgrade( w, r, nil )
 	if err != nil {
 		log.Println( err )
 		return
@@ -82,18 +84,20 @@ func (c *Client) updatePosition( dir vec2 ) {
 	newPos := addVec( c.player.pos, dir )
 	if withinBounds( newPos ) {
 		c.player.pos = newPos
-		id := c.hub[c]
-		c.hub.game[ newPos.X ][ newPos.Y ] = id
+		id := c.hub.clients[c]
+		c.hub.game.grid[ newPos.X ][ newPos.Y ] = id
 	}
 }
 
 func (c *Client) sendPlayerState() {
 	gameInfo, err := json.Marshal( c.hub.game )
-	if err != nil:
+	if err != nil {
 		log.Println( "JSON Marshal error: ", err )
+	}
 
-	err := c.conn.WriteMessage( websocket.TextMessage, gameInfo )
-	if err != nil:
+	err = c.conn.WriteMessage( websocket.TextMessage, gameInfo )
+	if err != nil {
 		c.conn.Close()
+	}
 }
 

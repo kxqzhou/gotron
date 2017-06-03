@@ -36,6 +36,36 @@ var GameLayer = cc.Layer.extend({
 		this.drawNode = new cc.drawNode();
 		this.addChild( this.drawNode );
 
+		if ('keyboard' in cc.sys.capabilities) {
+			cc.eventManager.addListener( {
+				event: cc.EventListener.KEYBOARD,
+				onKeyPressed: function (key, evt) {
+					switch (key) {
+						case cc.keyCode.KEY_W:
+						case cc.keyCode.KEY_UP_ARROW:
+							var dir = "{ X: 0, Y: 1 }";
+							this.conn.send( dir );
+							break;
+						case cc.keyCode.KEY_A:
+						case cc.keyCode.KEY_LEFT_ARROW:
+							var dir = "{ X: -1, Y: 0 }";
+							this.conn.send( dir );
+							break;						
+						case cc.keyCode.KEY_S:
+						case cc.keyCode.KEY_DOWN_ARROW:
+							var dir = "{ X: 0, Y: -1 }";
+							this.conn.send( dir );
+							break;
+						case cc.keyCode.KEY_D:
+						case cc.keyCode.KEY_RIGHT_ARROW:
+							var dir = "{ X: 1, Y: 0 }";
+							this.conn.send( dir );
+							break;
+					}
+				}
+			}, this );
+		}
+
 		this.scheduleUpdate();
 	},
 
@@ -49,13 +79,11 @@ var GameLayer = cc.Layer.extend({
 				grid[ i * gameInfo.grid.length + j ] = gameInfo.grid[i][j];
 			}
 		}
+
+		this.reDraw();
 	},
 
-	onSocketError:function (err) {
-		console.log( "front-end socket error: " + err );
-	},
-
-	update:function (dt) {
+	reDraw:function() {
 		// more hardcoding.. this is bad
 		for (var i = 0; i < 80; i++) {
 			for (var j = 0; j < 45; j++) {
@@ -63,6 +91,15 @@ var GameLayer = cc.Layer.extend({
 										this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] );
 			}
 		}
+	},
+
+	onSocketError:function (err) {
+		console.log( "front-end socket error: " + err );
+	},
+
+	update:function (dt) {
+		var command = "";
+
 	}
 });
 

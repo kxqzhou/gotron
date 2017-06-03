@@ -26,7 +26,7 @@ var counter int = 0
 
 func generateID() int {
 	// mod 4 b/c going to run out of colors (in logic) lol
-	retval = counter + 1
+	retval := counter + 1
 	counter = (counter + 1) % 4
 	return retval
 }
@@ -38,9 +38,9 @@ func (h *Hub) Run() {
 			h.clients[c] = generateID()
 		case c := <- h.unregister:
 			if _, ok := h.clients[c]; ok {
-				delete( h.colors, h.clients[c] )
 				delete( h.clients, c )
 			}
+		}
 	}
 }
 
