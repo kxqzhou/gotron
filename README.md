@@ -1,2 +1,2 @@
 # GoTron
-Experimenting with Go / Golang server and WebSockets communication. Client is written in JavaScript with Cocos2D-HTML5
+Experimenting with Golang server and WebSockets communication. Front-end is written in JavaScript with Cocos2D-HTML5
