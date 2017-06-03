@@ -40,7 +40,7 @@ type Game struct {
 
 func newGame() *Game {
 	return &Game {
-		colors: []string{ "red", "blue", "green", "yellow" },
+		colors: []string{ "black", "red", "blue", "green", "yellow" },
 		grid: [ gridWidth ][ gridHeight ]int,
 	}
 }

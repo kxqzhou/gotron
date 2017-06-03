@@ -22,12 +22,13 @@ func NewHub() *Hub {
 }
 
 // definitely better way to do this..
-var counter int = 1
+var counter int = 0
 
 func generateID() int {
 	// mod 4 b/c going to run out of colors (in logic) lol
+	retval = counter + 1
 	counter = (counter + 1) % 4
-	return counter - 1
+	return retval
 }
 
 func (h *Hub) Run() {
