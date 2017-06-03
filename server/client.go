@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/gorilla/websocket"
-	"os"
+	//"os"
 )
 
 const (
@@ -50,16 +50,16 @@ func (c *Client) receive() {
 			break
 		}
 
-		os.Stdout.Write( keyInput )
+		//os.Stdout.Write( keyInput )
 		
 		var command vec2
 		err = json.Unmarshal( keyInput, &command )
 
-		log.Println( "cmd:", command )
+		//log.Println( "cmd:", command )
 
 		c.updatePosition( command )
 
-		log.Println( "pos:", c.player.pos )
+		//log.Println( "pos:", c.player.pos )
 	}
 }
 

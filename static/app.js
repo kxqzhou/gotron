@@ -59,6 +59,8 @@ var GameLayer = cc.Layer.extend({
 					app.grid[ i * gameInfo.Grid.length + j ] = gameInfo.Grid[i][j];
 				}
 			}
+
+			app.reDraw();
 		};
 
 		this.conn.onerror = this.onSocketError;
@@ -67,12 +69,12 @@ var GameLayer = cc.Layer.extend({
 			cc.eventManager.addListener( {
 				event: cc.EventListener.KEYBOARD,
 				onKeyPressed: function (key, evt) {
-					console.log( "pressed:", key )
+					//console.log( "pressed:", key )
 
 					switch (key) {
 						case KeyCode.KEY_W:
 						case KeyCode.KEY_UP_ARROW:
-							console.log( "W or up" )
+							//console.log( "W or up" )
 
 							var dir = {
 								X:0,
@@ -82,7 +84,7 @@ var GameLayer = cc.Layer.extend({
 							break;
 						case KeyCode.KEY_A:
 						case KeyCode.KEY_LEFT_ARROW:
-							console.log( "A or left" )
+							//console.log( "A or left" )
 
 							var dir = {
 								X:-1,
@@ -92,7 +94,7 @@ var GameLayer = cc.Layer.extend({
 							break;						
 						case KeyCode.KEY_S:
 						case KeyCode.KEY_DOWN_ARROW:
-							console.log( "S or down" )
+							//console.log( "S or down" )
 
 							var dir = {
 								X:0,
@@ -102,7 +104,7 @@ var GameLayer = cc.Layer.extend({
 							break;
 						case KeyCode.KEY_D:
 						case KeyCode.KEY_RIGHT_ARROW:
-							console.log( "D or right" )
+							//console.log( "D or right" )
 
 							var dir = {
 								X:1,
@@ -115,7 +117,7 @@ var GameLayer = cc.Layer.extend({
 			}, this );
 		}
 
-		this.scheduleUpdate();
+		//this.scheduleUpdate();
 	},
 
 	/*onSocketMessage:function (evt) {
@@ -136,17 +138,29 @@ var GameLayer = cc.Layer.extend({
 		console.log( "front-end socket error: " + err );
 	},
 	
-	update:function (dt) {
+	reDraw:function () {
+		// buffer refresh? i think
+		this.drawNode.clear();
+
 		// more hardcoding.. this is bad
 		for (var i = 0; i < 80; i++) {
 			for (var j = 0; j < 45; j++) {
 				if (this.grid[ i * 80 + j ] > 0) {
-					this.drawNode.drawRect( cc.p( i * 10, j * 10 ), cc.p( (i + 1) * 10, (j + 1) * 10 ), 0, 
-											this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] );
+					//console.log( this.grid[ i * 80 + j ] );
+
+					//console.log( this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] )
+
+					this.drawNode.setDrawColor( this.colorLookup[ this.colors[ this.grid[ i * 80 + j ] ] ] );
+
+					this.drawNode.drawRect( cc.p( i * 10, j * 10 ), cc.p( (i + 1) * 10, (j + 1) * 10 ) );
 				}
 			}
 		}
-	}
+	},
+
+	/*update:function (dt) {
+		
+	}*/
 });
 
 var GameScene = cc.Scene.extend({

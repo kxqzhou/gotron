@@ -2,6 +2,12 @@
 
 package server
 
+/*
+import (
+	"log"
+)
+*/
+
 // maintains active clients and broadcasts game state to clients
 type Hub struct {
 	clients map[*Client]int
@@ -28,6 +34,8 @@ func generateID() int {
 	// mod 4 b/c going to run out of colors (in logic) lol
 	retval := counter + 1
 	counter = (counter + 1) % 4
+
+	//log.Println("retval", retval)
 
 	return retval
 }
