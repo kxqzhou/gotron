@@ -13,9 +13,10 @@ var GameLayer = cc.Layer.extend({
 		var background = new cc.LayerColor( cc.color(0, 0, 0) );
 		this.addChild( background, res.Z_ORDER_BG, res.TAG_BG );
 
-		this.conn = new WebSocket( "ws://localhost:8080" );
-		this.conn.onmessage = onSocketMessage;
-		this.conn.onerror = onSocketError;
+		this.conn = new WebSocket( "ws://localhost:8080/ws" );
+
+		this.conn.onmessage = this.onSocketMessage;
+		this.conn.onerror = this.onSocketError;
 
 		// hardcoded numbers.. how to retrieve from server?
 		for (var i = 0; i < 5; i++) {
@@ -27,11 +28,11 @@ var GameLayer = cc.Layer.extend({
 
 		// more hard code to avoid big switch statement / re calc every time
 		// maybe the go server should somehow pass in a cc.color?
-		colorLookup["black"] = cc.color( 0, 0, 0 );
-		colorLookup["red"] = cc.color( 255, 0, 0 );
-		colorLookup["blue"] = cc.color( 0, 255, 0 );
-		colorLookup["green"] = cc.color( 0, 0, 255 );
-		colorLookup["yellow"] = cc.color( 0, 128, 128 );
+		this.colorLookup["black"] = cc.color( 0, 0, 0 );
+		this.colorLookup["red"] = cc.color( 255, 0, 0 );
+		this.colorLookup["blue"] = cc.color( 0, 255, 0 );
+		this.colorLookup["green"] = cc.color( 0, 0, 255 );
+		this.colorLookup["yellow"] = cc.color( 0, 128, 128 );
 
 		this.drawNode = new cc.drawNode();
 		this.addChild( this.drawNode );
