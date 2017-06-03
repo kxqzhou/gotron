@@ -34,7 +34,7 @@ var GameLayer = cc.Layer.extend({
 		this.colorLookup["green"] = cc.color( 0, 0, 255 );
 		this.colorLookup["yellow"] = cc.color( 0, 128, 128 );
 
-		this.drawNode = new cc.drawNode();
+		this.drawNode = new cc.DrawNode();
 		this.addChild( this.drawNode );
 
 		if ('keyboard' in cc.sys.capabilities) {
@@ -42,23 +42,23 @@ var GameLayer = cc.Layer.extend({
 				event: cc.EventListener.KEYBOARD,
 				onKeyPressed: function (key, evt) {
 					switch (key) {
-						case cc.keyCode.KEY_W:
-						case cc.keyCode.KEY_UP_ARROW:
+						case cc.KeyCode.KEY_W:
+						case cc.KeyCode.KEY_UP_ARROW:
 							var dir = "{ X: 0, Y: 1 }";
 							this.conn.send( dir );
 							break;
-						case cc.keyCode.KEY_A:
-						case cc.keyCode.KEY_LEFT_ARROW:
+						case cc.KeyCode.KEY_A:
+						case cc.KeyCode.KEY_LEFT_ARROW:
 							var dir = "{ X: -1, Y: 0 }";
 							this.conn.send( dir );
 							break;						
-						case cc.keyCode.KEY_S:
-						case cc.keyCode.KEY_DOWN_ARROW:
+						case cc.KeyCode.KEY_S:
+						case cc.KeyCode.KEY_DOWN_ARROW:
 							var dir = "{ X: 0, Y: -1 }";
 							this.conn.send( dir );
 							break;
-						case cc.keyCode.KEY_D:
-						case cc.keyCode.KEY_RIGHT_ARROW:
+						case cc.KeyCode.KEY_D:
+						case cc.KeyCode.KEY_RIGHT_ARROW:
 							var dir = "{ X: 1, Y: 0 }";
 							this.conn.send( dir );
 							break;
@@ -67,7 +67,7 @@ var GameLayer = cc.Layer.extend({
 			}, this );
 		}
 
-		this.scheduleUpdate();
+		//this.scheduleUpdate();
 	},
 
 	onSocketMessage:function (evt) {
@@ -97,11 +97,11 @@ var GameLayer = cc.Layer.extend({
 	onSocketError:function (err) {
 		console.log( "front-end socket error: " + err );
 	},
-
+	/*
 	update:function (dt) {
-		var command = "";
-
+		
 	}
+	*/
 });
 
 var GameScene = cc.Scene.extend({

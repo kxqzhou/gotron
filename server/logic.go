@@ -30,15 +30,14 @@ func newPlayer() *Player {
 }
 
 type Game struct {
-	colors []string
-	grid [ gridWidth ][ gridHeight ]int
+	Colors []string
+	Grid [ gridWidth ][ gridHeight ]int
 }
 
 func newGame() *Game {
 	return &Game {
-		colors: []string{ "black", "red", "blue", "green", "yellow" },
-		// grid: [][]int,
-		// let grid set to default value
+		Colors: []string{ "black", "red", "blue", "green", "yellow" },
+		// use default instant for grid
 	}
 }
 
