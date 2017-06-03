@@ -32,6 +32,7 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc( "/", serveHome )
+	http.Handle( "/static", http.FileServer( http.Dir( "/static" ) ) )
 	http.HandleFunc( "/ws", func( w http.ResponseWriter, r *http.Request ) {
 		server.ServeWs( hub, w, r )
 	} )
